@@ -211,8 +211,6 @@ Tests: feature order vs the model's `features`, parity with notebook code, RAW_C
 * **History goes stale.** The artifact's store ends on 2026-06-02; tenders published later get a warning and do not benefit from newer organizer behaviour. The service does not append finished purchases to the store (the notebook's `update_store` is not ported), so retrain/refresh the artifact periodically.
 * Data covers 2025-01 → 2026-05 only; seasonality and year-end effects cannot be separated from trend.
 * Single worker by design (model and indexes in process memory, SQLite single writer). Memory: allow ≥ 3 GB.
-* `text.joblib` / `config.joblib` are pickles: load only model folders you trust (see the security note above). Library versions are pinned to training versions.
-* No authentication; put it behind your own proxy if exposed. Winner/prediction data is stored in plain SQLite.
 * Timestamps from GosPlan are naive UTC and shown as UTC; the model treats `published_at` as UTC as in training.
 
 ## Project layout
