@@ -13,7 +13,7 @@ cd tender-predictor
 # 1. get the model folder from Hugging Face into ./artifacts/hf_model  (see "Model files" below)
 pip install huggingface_hub==2.2.0                        # download tool only, not part of the image
 export HF_TOKEN=hf_xxx                                    # read token for the private repo
-python scripts/download_model.py --repo your-username/procurement-price-artifacts --revision v1
+python scripts/download_model.py --repo ArlandSol/procurement-price-artifacts --revision v1
 # 2. run
 cp .env.example .env                                      # optional
 docker compose up --build -d
