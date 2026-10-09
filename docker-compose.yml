@@ -1,0 +1,44 @@
+# Usage:  python scripts/download_model.py ...  (see README)  &&  docker compose up --build
+# Requires Docker Compose v2.24+ (for the optional `env_file` below).
+services:
+  tender-predictor:
+    build: .
+    image: tender-price-predictor:1.0
+    container_name: tender-price-predictor
+    restart: unless-stopped
+    ports:
+      - "${HOST_PORT:-8000}:8000"
+    environment:
+      # Fixed container paths
+      DB_PATH: /data/tenders.db
+      ARTIFACT_PATH: /app/artifacts/hf_model
+      # Tunables (defaults shown; override in .env)
+      GOSPLAN_BASE_URL: ${GOSPLAN_BASE_URL:-https://v2test.gosplan.info}
+      GOSPLAN_TIMEOUT: ${GOSPLAN_TIMEOUT:-20}
+      GOSPLAN_RETRIES: ${GOSPLAN_RETRIES:-3}
+      GOSPLAN_BACKOFF: ${GOSPLAN_BACKOFF:-0.5}
+      GOSPLAN_CONCURRENCY: ${GOSPLAN_CONCURRENCY:-8}
+      MAX_BATCH_SIZE: ${MAX_BATCH_SIZE:-1000}
+      LOG_LEVEL: ${LOG_LEVEL:-INFO}
+    # Map tile settings are passed via .env ONLY when you set them. (They contain {z}/{x}/{y}
+    # braces, which Compose interpolation cannot take as a default, and an empty MAP_TILE_URL
+    # means "no tiles / offline"; unset means the app's built-in OpenStreetMap default.)
+    env_file:
+      - path: .env
+        required: false
+    volumes:
+      - tender-data:/data                # SQLite database (named volume)
+      - ./artifacts:/app/artifacts:ro    # model folder goes to ./artifacts/hf_model (see README)
+    deploy:
+      resources:
+        limits:
+          memory: 4g                     # ~1.4 GB steady state, ~2.2 GB peak while the model loads
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/api/health', timeout=4)"]
+      interval: 30s
+      timeout: 5s
+      start_period: 30s
+      retries: 3
+
+volumes:
+  tender-data:

@@ -1,0 +1,14 @@
+[tool.ruff]
+line-length = 130
+target-version = "py312"
+extend-exclude = ["tests/fixtures", "scripts"]
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "UP", "B"]
+ignore = ["B008", "E501"]  # FastAPI Depends()/Query() defaults
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+asyncio_mode = "auto"
+markers = ["model: needs the real predictor.joblib (set PREDICTOR_ARTIFACT or place it in artifacts/)"]
+filterwarnings = ["ignore::DeprecationWarning", "ignore::starlette.exceptions.StarletteDeprecationWarning"]

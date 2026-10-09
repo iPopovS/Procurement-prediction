@@ -1,0 +1,132 @@
+{
+ "collecting_finished_at": "2026-02-06T00:00:00",
+ "contract_guarantee_amount": null,
+ "contract_guarantee_part": 5.0,
+ "currency_code": "RUB",
+ "customers": [],
+ "delivery_places": [],
+ "delivery_places_kladr": [],
+ "doc_created_at": "2026-02-15T00:06:47.531000",
+ "doc_updated_at": "2026-02-15T00:14:08.253000",
+ "ikzs": [
+  "262253601068525360100100100010000244"
+ ],
+ "ktru": [
+  "22.21.29.120-00000004"
+ ],
+ "max_price": 901989.0,
+ "object_info": "Трубка эндотрахеальная стандартная, одноразового использования",
+ "okpd2": [],
+ "owners": [],
+ "plan_numbers": [
+  "202603203001015001"
+ ],
+ "position_numbers": [
+  "202603203001015001000010"
+ ],
+ "published_at": "2026-01-30T00:03:03.391000",
+ "purchase_number": "0320300101526000015",
+ "purchase_type": "epNotificationEZK2020",
+ "region": 25,
+ "responsible": "2536010685",
+ "stage": 2,
+ "updated_at": "2026-02-11T06:38:35.193000",
+ "docs": [
+  {
+   "doc_type": "epNotificationEZK2020",
+   "published_at": "2026-01-30T00:03:03.391000",
+   "source": {
+    "id": "41788885",
+    "commonInfo": {
+     "purchaseNumber": "0320300101526000015",
+     "href": "https://zakupki.gov.ru/epz/order/notice/zk20/view/common-info.html?regNumber=0320300101526000015",
+     "placingWay": {
+      "code": "ZKP20",
+      "name": "Запрос котировок в электронной форме"
+     },
+     "ETP": {
+      "code": "ETP_SBAST",
+      "name": "АО «Сбербанк-АСТ»",
+      "url": "http://www.sberbank-ast.ru"
+     },
+     "purchaseObjectInfo": "Трубка эндотрахеальная стандартная, одноразового использования"
+    },
+    "purchaseResponsibleInfo": {
+     "responsibleOrgInfo": {
+      "regNum": "03203001015",
+      "fullName": "КРАЕВОЕ ГОСУДАРСТВЕННОЕ  БЮДЖЕТНОЕ УЧРЕЖДЕНИЕ ЗДРАВООХРАНЕНИЯ \"ВЛАДИВОСТОКСКАЯ КЛИНИЧЕСКАЯ БОЛЬНИЦА № 4 \"",
+      "shortName": "КГБУЗ \"ВКБ № 4\"",
+      "postAddress": "Российская Федерация, 690034, Приморский край, Владивосток г, УЛИЦА ВОРОПАЕВА, 5",
+      "INN": "2536010685"
+     }
+    },
+    "notificationInfo": {
+     "contractConditionsInfo": {
+      "deliveryPlacesInfo": {
+       "byGARInfo": {
+        "GARInfo": {
+         "GARAddress": "край Приморский, г.о. Владивостокский, г Владивосток, ул Воропаева, д. 5"
+        },
+        "deliveryPlace": "Приморский Край, г.о. Владивостокский, г Владивосток, ул Воропаева, д. 5"
+       }
+      }
+     }
+    }
+   }
+  },
+  {
+   "doc_type": "epProtocolEZK2020Final",
+   "published_at": "2026-02-06T01:51:11",
+   "source": {
+    "id": "51273780",
+    "versionNumber": "1",
+    "commonInfo": {
+     "purchaseNumber": "0320300101526000015",
+     "docNumber": "ИЗК1"
+    },
+    "protocolInfo": {
+     "applicationsInfo": {
+      "applicationInfo": [
+       {
+        "commonInfo": {
+         "appNumber": "127"
+        },
+        "finalPrice": "147150.00",
+        "admittedInfo": {
+         "appAdmittedInfo": {
+          "admitted": "true",
+          "appRating": "1"
+         }
+        }
+       },
+       {
+        "commonInfo": {
+         "appNumber": "76"
+        },
+        "finalPrice": "901989.00",
+        "admittedInfo": {
+         "appAdmittedInfo": {
+          "admitted": "true",
+          "appRating": "2"
+         }
+        }
+       }
+      ]
+     }
+    }
+   }
+  },
+  {
+   "doc_type": "epProtocolEvasion",
+   "published_at": "2026-02-11T06:38:35.193000",
+   "source": {
+    "protocolInfo": {
+     "applicationInfo": {
+      "journalNumber": "127",
+      "appRating": "1"
+     }
+    }
+   }
+  }
+ ]
+}

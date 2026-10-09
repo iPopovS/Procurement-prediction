@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title data-i18n="Tender Price Predictor">Прогноз цены закупки</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='14' fill='%230b5c73'/%3E%3Cpath d='M9 20l5-6 4 4 5-8' stroke='%23fff' stroke-width='2.5' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="/static/css/fonts.css">
+<link rel="stylesheet" href="/static/vendor/maplibre-gl.css">
+<link rel="stylesheet" href="/static/css/app.css">
+</head>
+<body>
+<div id="app">
+  <header id="topbar">
+    <div id="brand">
+      <svg width="26" height="26" viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="14" fill="#0b5c73"/><path d="M9 20l5-6 4 4 5-8" stroke="#fff" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <span data-i18n="Tender Price Predictor">Прогноз цены закупки</span>
+    </div>
+    <div id="search-wrap">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
+      <input id="search" type="search" placeholder="Поиск по номеру, названию, организатору, коду или адресу" data-i18n-placeholder="Search by number, title, organizer, code or address" autocomplete="off" aria-label="Поиск закупок" data-i18n-aria-label="Search tenders" role="combobox" aria-expanded="false" aria-controls="search-results">
+      <div id="search-results" class="hidden" role="listbox"></div>
+    </div>
+    <div id="top-actions">
+      <div id="language-switch" role="group" aria-label="Язык интерфейса" data-i18n-aria-label="Interface language">
+        <button type="button" data-language="ru" aria-pressed="true" aria-label="Русский" lang="ru">RU</button>
+        <button type="button" data-language="en" aria-pressed="false" aria-label="English" lang="en">EN</button>
+      </div>
+      <span id="model-pill" class="loading" title="Состояние модели прогнозирования"><i></i><span>Модель загружается</span></span>
+      <button class="btn" id="btn-filters" type="button" data-i18n="Filters">Фильтры</button>
+      <button class="btn primary" id="btn-upload" type="button" data-i18n="Upload tenders">Загрузить закупки</button>
+    </div>
+  </header>
+
+  <div id="main">
+    <aside id="rail" aria-label="Фильтры" data-i18n-aria-label="Filters">
+      <section class="rail-sec" id="counters" aria-live="polite"></section>
+      <section class="rail-sec">
+        <h3 data-i18n="Status">Статус</h3>
+        <div class="seg" id="f-status"></div>
+      </section>
+      <section class="rail-sec">
+        <h3 data-i18n="Purchase type">Способ закупки</h3>
+        <div class="seg" id="f-type"></div>
+      </section>
+      <section class="rail-sec">
+        <h3 data-i18n="Region">Регион</h3>
+        <input id="f-region-q" type="search" placeholder="Найти регион" aria-label="Найти регион" data-i18n-placeholder="Find a region" data-i18n-aria-label="Find a region" class="field-input" style="width:100%;height:32px;padding:0 8px;border:1px solid var(--rule);border-radius:4px">
+        <div id="region-list"></div>
+      </section>
+      <section class="rail-sec">
+        <h3 data-i18n="Organizer">Организатор</h3>
+        <div class="ac-wrap">
+          <input id="f-resp" type="search" placeholder="Название или идентификатор" data-i18n-placeholder="Name or ID" autocomplete="off" aria-label="Организатор" data-i18n-aria-label="Organizer" style="width:100%;height:32px;padding:0 8px;border:1px solid var(--rule);border-radius:4px">
+          <div id="resp-list" class="ac-list hidden"></div>
+        </div>
+        <div id="resp-chip" style="margin-top:6px"></div>
+      </section>
+      <section class="rail-sec">
+        <h3 data-i18n="Published">Дата публикации</h3>
+        <div class="row2">
+          <label class="field"><span data-i18n="From">С</span><input type="date" id="f-from"></label>
+          <label class="field"><span data-i18n="To">По</span><input type="date" id="f-to"></label>
+        </div>
+        <h3 style="margin-top:6px" data-i18n="Max price, RUB">Начальная цена, ₽</h3>
+        <div class="row2">
+          <label class="field"><span data-i18n="Min">От</span><input type="number" min="0" step="any" id="f-pmin" inputmode="decimal"></label>
+          <label class="field"><span data-i18n="Max">До</span><input type="number" min="0" step="any" id="f-pmax" inputmode="decimal"></label>
+        </div>
+        <div id="price-hint" class="muted" style="font-size:12px"></div>
+      </section>
+      <section class="rail-sec">
+        <h3 data-i18n="Location">Местоположение</h3>
+        <label class="field"><select id="f-loc"><option value="" data-i18n="Any">Любое</option><option value="true" data-i18n="Shown on the map">На карте</option><option value="false" data-i18n="Not on the map">Не на карте</option></select></label>
+        <button class="btn small" id="btn-reset" type="button" data-i18n="Reset all filters">Сбросить все фильтры</button>
+      </section>
+    </aside>
+
+    <section id="stage">
+      <div id="map" role="application" aria-label="Карта закупок" data-i18n-aria-label="Map of tenders"></div>
+      <div id="map-loading" class="hidden" data-i18n="Updating map…">Обновление карты…</div>
+      <div id="map-empty" class="hidden"></div>
+      <div id="legend"></div>
+      <aside id="drawer" class="closed" aria-label="Информация о закупке" data-i18n-aria-label="Tender details"></aside>
+    </section>
+  </div>
+</div>
+<div id="modal-root"></div>
+<script src="/static/vendor/maplibre-gl.js"></script>
+<script type="module" src="/static/js/main.js"></script>
+<noscript data-i18n="This application needs JavaScript.">Для работы приложения необходим JavaScript.</noscript>
+</body>
+</html>

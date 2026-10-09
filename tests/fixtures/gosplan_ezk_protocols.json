@@ -1,0 +1,56 @@
+[
+ {
+  "doc_type": "epProtocolEZK2020Final",
+  "published_at": "2026-02-06T01:51:11",
+  "source": {
+   "id": "51273780",
+   "versionNumber": "1",
+   "commonInfo": {
+    "purchaseNumber": "0320300101526000015",
+    "docNumber": "ИЗК1"
+   },
+   "protocolInfo": {
+    "applicationsInfo": {
+     "applicationInfo": [
+      {
+       "commonInfo": {
+        "appNumber": "127"
+       },
+       "finalPrice": "147150.00",
+       "admittedInfo": {
+        "appAdmittedInfo": {
+         "admitted": "true",
+         "appRating": "1"
+        }
+       }
+      },
+      {
+       "commonInfo": {
+        "appNumber": "76"
+       },
+       "finalPrice": "901989.00",
+       "admittedInfo": {
+        "appAdmittedInfo": {
+         "admitted": "true",
+         "appRating": "2"
+        }
+       }
+      }
+     ]
+    }
+   }
+  }
+ },
+ {
+  "doc_type": "epProtocolEvasion",
+  "published_at": "2026-02-11T06:38:35.193000",
+  "source": {
+   "protocolInfo": {
+    "applicationInfo": {
+     "journalNumber": "127",
+     "appRating": "1"
+    }
+   }
+  }
+ }
+]

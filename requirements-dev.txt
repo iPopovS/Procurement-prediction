@@ -1,0 +1,6 @@
+-r requirements.txt
+pytest==9.1.1
+pytest-asyncio==1.4.0
+ruff==0.16.10
+shapely==2.1.2   # only for scripts/build_geo_data.py
+huggingface_hub==2.2.0   # only for scripts/download_model.py (NOT needed in the Docker image)

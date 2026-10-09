@@ -1,0 +1,22 @@
+# Patterns are anchored to the build-context root so that app/data/ and app/static/ are never excluded.
+/.git
+/.gitignore
+/.env
+/.venv
+/venv
+**/__pycache__
+**/*.pyc
+/.pytest_cache
+/.ruff_cache
+/node_modules
+/tests
+/scripts
+/data
+# the model folder (~87 MB) is mounted at runtime, never copied into the image
+/artifacts
+/*.joblib
+/*.ipynb
+/*.md
+/docker-compose.yml
+/Dockerfile
+/requirements-dev.txt
