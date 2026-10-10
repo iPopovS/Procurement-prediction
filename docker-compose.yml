@@ -13,7 +13,9 @@ services:
       DB_PATH: /data/tenders.db
       ARTIFACT_PATH: /app/artifacts/hf_model
       # Tunables (defaults shown; override in .env)
-      GOSPLAN_BASE_URL: ${GOSPLAN_BASE_URL:-https://v2test.gosplan.info}
+      # With GOSPLAN_API_KEY set (in .env) and no GOSPLAN_BASE_URL, the app uses https://v2.gosplan.info.
+      GOSPLAN_BASE_URL: ${GOSPLAN_BASE_URL:-}
+      GOSPLAN_API_KEY: ${GOSPLAN_API_KEY:-}
       GOSPLAN_TIMEOUT: ${GOSPLAN_TIMEOUT:-20}
       GOSPLAN_RETRIES: ${GOSPLAN_RETRIES:-3}
       GOSPLAN_BACKOFF: ${GOSPLAN_BACKOFF:-0.5}

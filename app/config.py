@@ -7,6 +7,8 @@ from dataclasses import dataclass
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
+GOSPLAN_TEST_URL = "https://v2test.gosplan.info"
+GOSPLAN_PROD_URL = "https://v2.gosplan.info"
 
 
 def _env(name: str, default: str) -> str:
@@ -33,11 +35,16 @@ class Settings:
     map_tile_attribution: str
     map_tile_max_zoom: int
     log_level: str
+    gosplan_api_key: str = ""
 
     @classmethod
     def from_env(cls) -> Settings:
+        api_key = _env("GOSPLAN_API_KEY", "")
+        # No key -> free test server; a key -> production server (an explicit GOSPLAN_BASE_URL still wins).
+        default_url = GOSPLAN_PROD_URL if api_key else GOSPLAN_TEST_URL
         return cls(
-            gosplan_base_url=_env("GOSPLAN_BASE_URL", "https://v2test.gosplan.info").rstrip("/"),
+            gosplan_api_key=api_key,
+            gosplan_base_url=_env("GOSPLAN_BASE_URL", default_url).rstrip("/"),
             gosplan_timeout=float(_env("GOSPLAN_TIMEOUT", "20")),
             gosplan_retries=int(_env("GOSPLAN_RETRIES", "3")),
             gosplan_backoff=float(_env("GOSPLAN_BACKOFF", "0.5")),

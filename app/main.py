@@ -37,6 +37,7 @@ def create_app(settings: Settings | None = None, *, ctx: Context | None = None) 
             gosplan = GosplanClient(
                 settings.gosplan_base_url, settings.gosplan_timeout, settings.gosplan_retries,
                 settings.gosplan_backoff, settings.gosplan_concurrency,
+                api_key=settings.gosplan_api_key,
             )
             predictor = PredictionService(settings.artifact_path)
             service = TenderService(db, gosplan, predictor, settings.max_batch_size)

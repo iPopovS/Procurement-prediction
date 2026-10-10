@@ -34,8 +34,10 @@ class GosplanClient:
         backoff: float = 0.5,
         concurrency: int = 8,
         client: httpx.AsyncClient | None = None,
+        api_key: str = "",
     ):
         self.base_url = base_url.rstrip("/")
+        self._api_key = api_key.strip()
         self.retries = max(0, retries)
         self.backoff = backoff
         self._sem = asyncio.Semaphore(concurrency)
@@ -54,10 +56,13 @@ class GosplanClient:
     async def _get(self, path: str) -> httpx.Response:
         url = f"{self.base_url}{path}"
         last: GosplanError | None = None
+        headers = {"Accept": "application/json"}
+        if self._api_key:
+            headers["apikey"] = self._api_key  # production server (v2.gosplan.info) header
         for attempt in range(self.retries + 1):
             try:
                 async with self._sem:  # slot is released while we back off
-                    resp = await self._client.get(url, headers={"Accept": "application/json"})
+                    resp = await self._client.get(url, headers=headers)
             except httpx.TimeoutException:
                 last = GosplanError("timeout", "GosPlan did not answer in time")
             except httpx.TransportError as exc:

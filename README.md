@@ -40,7 +40,8 @@ All settings are environment variables (`.env.example` lists them; defaults in `
 
 | Variable | Default | Meaning |
 |---|---|---|
-| `GOSPLAN_BASE_URL` | `https://v2test.gosplan.info` | GosPlan API root |
+| `GOSPLAN_BASE_URL` | `https://v2test.gosplan.info` (`https://v2.gosplan.info` if `GOSPLAN_API_KEY` is set) | GosPlan API root; an explicit value always wins |
+| `GOSPLAN_API_KEY` | empty | optional API key, sent as the `apikey` header; switches the default server to production |
 | `GOSPLAN_TIMEOUT` | `20` | seconds per HTTP attempt |
 | `GOSPLAN_RETRIES` | `3` | extra attempts on timeout / 429 / 5xx (exponential backoff + jitter, honours `Retry-After`) |
 | `GOSPLAN_BACKOFF` | `0.5` | base delay, seconds |
@@ -53,6 +54,16 @@ All settings are environment variables (`.env.example` lists them; defaults in `
 | `MODEL_AUTOLOAD` | `1` | `0` = do not load the model (UI/API without predictions) |
 | `LOG_LEVEL` | `INFO` | |
 | `HOST_PORT` | `8000` | host port in compose |
+
+### GosPlan test vs. production server
+
+By default the service uses the free test server `https://v2test.gosplan.info` (no key, same datasets as production, but limited to 10 requests/minute per IP). If you have an API key (see <https://gosplan.info/docs/>; the Telegram bot gives a 7-day trial), put it in `.env`:
+
+```
+GOSPLAN_API_KEY=your-key
+```
+
+The service then talks to `https://v2.gosplan.info` and sends the key in the `apikey` header. Restart the app (`docker compose up -d`) after changing `.env`. To use a key with another URL, set `GOSPLAN_BASE_URL` too.
 
 The default OSM tile server has a usage policy (no heavy use, needs a real browser `Referer`); for production point `MAP_TILE_URL` at your own tile source.
 

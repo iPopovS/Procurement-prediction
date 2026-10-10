@@ -81,3 +81,17 @@ async def test_path_injection_is_quoted():
 
     await make(handler).get_purchase("../../etc")
     assert "/../" not in seen["raw"]
+
+
+async def test_api_key_header_sent_only_when_configured():
+    seen = []
+
+    def handler(req):
+        seen.append(req.headers.get("apikey"))
+        return httpx.Response(200, json={"purchase_number": "1"})
+
+    transport = httpx.MockTransport(handler)
+    keyed = GosplanClient("https://example.test", client=httpx.AsyncClient(transport=transport), api_key="k1")
+    await keyed.get_purchase("1")
+    await make(handler).get_purchase("1")
+    assert seen == ["k1", None]
